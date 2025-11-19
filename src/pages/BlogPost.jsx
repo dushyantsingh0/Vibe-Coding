@@ -1,32 +1,27 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useBlog } from '../context/BlogContext';
 import { useAuth } from '../context/AuthContext';
-import CommentForm from '../components/CommentForm';
-import CommentList from '../components/CommentList';
-import LoadingSpinner from '../components/LoadingSpinner';
+import PostLikes from '../components/PostLikes';
+import PostComments from '../components/PostComments';
 import './BlogPost.css';
 
 export default function BlogPost() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { updatePostLikes, addComment } = useBlog();
     const { currentUser } = useAuth();
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const [likeLoading, setLikeLoading] = useState(false);
-    const [dislikeLoading, setDislikeLoading] = useState(false);
 
     const fetchPost = async () => {
         try {
             setLoading(true);
-            const userId = currentUser?.uid || '';
             const API_URL = import.meta.env.VITE_API_URL || '/api';
-            const response = await fetch(`${API_URL}/posts/${id}?userId=${userId}`);
-            if (!response.ok) throw new Error('Post not found');
-            const data = await response.json();
+            const response = await fetch(`${API_URL}/posts/${id}`);
 
+            if (!response.ok) throw new Error('Post not found');
+
+            const data = await response.json();
             setPost({
                 id: data.id,
                 title: data.title,
@@ -35,19 +30,7 @@ export default function BlogPost() {
                 content: data.content,
                 authorId: data.authorId,
                 authorName: data.authorName,
-                authorPhoto: data.authorPhoto,
-                likes: data.likes,
-                dislikes: data.dislikes,
-                likedBy: data.likedBy || [],
-                dislikedBy: data.dislikedBy || [],
-                comments: data.comments.map(c => ({
-                    id: c.id,
-                    text: c.text,
-                    timestamp: c.createdAt,
-                    userId: c.userId,
-                    userName: c.userName,
-                    userPhoto: c.userPhoto
-                }))
+                authorPhoto: data.authorPhoto
             });
         } catch (error) {
             console.error('Error fetching post:', error);
@@ -57,77 +40,10 @@ export default function BlogPost() {
     };
 
     useEffect(() => {
-        fetchPost();
-    }, [id, currentUser]);
-
-    const handleLike = async () => {
-        if (!currentUser) {
-            alert('Please sign in to like posts');
-            return;
+        if (id) {
+            fetchPost();
         }
-
-        // Optimistic update
-        const wasLiked = post.likedBy.includes(currentUser.uid);
-        const wasDisliked = post.dislikedBy.includes(currentUser.uid);
-
-        setPost(prev => ({
-            ...prev,
-            likes: wasLiked ? prev.likes - 1 : prev.likes + (wasDisliked ? 2 : 1),
-            dislikes: wasDisliked ? prev.dislikes - 1 : prev.dislikes,
-            likedBy: wasLiked ? prev.likedBy.filter(id => id !== currentUser.uid) : [...prev.likedBy, currentUser.uid],
-            dislikedBy: wasDisliked ? prev.dislikedBy.filter(id => id !== currentUser.uid) : prev.dislikedBy
-        }));
-
-        setLikeLoading(true);
-        try {
-            await updatePostLikes(post.id, 'like', currentUser.uid);
-            await fetchPost(); // Sync with server
-        } catch (error) {
-            // Revert on error
-            await fetchPost();
-        } finally {
-            setLikeLoading(false);
-        }
-    };
-
-    const handleDislike = async () => {
-        if (!currentUser) {
-            alert('Please sign in to dislike posts');
-            return;
-        }
-
-        // Optimistic update
-        const wasLiked = post.likedBy.includes(currentUser.uid);
-        const wasDisliked = post.dislikedBy.includes(currentUser.uid);
-
-        setPost(prev => ({
-            ...prev,
-            likes: wasLiked ? prev.likes - 1 : prev.likes,
-            dislikes: wasDisliked ? prev.dislikes - 1 : prev.dislikes + (wasLiked ? 2 : 1),
-            likedBy: wasLiked ? prev.likedBy.filter(id => id !== currentUser.uid) : prev.likedBy,
-            dislikedBy: wasDisliked ? prev.dislikedBy.filter(id => id !== currentUser.uid) : [...prev.dislikedBy, currentUser.uid]
-        }));
-
-        setDislikeLoading(true);
-        try {
-            await updatePostLikes(post.id, 'dislike', currentUser.uid);
-            await fetchPost(); // Sync with server
-        } catch (error) {
-            // Revert on error
-            await fetchPost();
-        } finally {
-            setDislikeLoading(false);
-        }
-    };
-
-    const handleComment = async (commentText) => {
-        if (!currentUser) {
-            alert('Please sign in to comment');
-            return;
-        }
-        await addComment(post.id, commentText, currentUser);
-        await fetchPost();
-    };
+    }, [id]);
 
     const handleDeleteClick = () => {
         setShowDeleteConfirm(true);
@@ -135,7 +51,8 @@ export default function BlogPost() {
 
     const confirmDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/api/posts/${post.id}`, {
+            const API_URL = import.meta.env.VITE_API_URL || '/api';
+            const response = await fetch(`${API_URL}/posts/${post.id}`, {
                 method: 'DELETE'
             });
 
@@ -165,8 +82,6 @@ export default function BlogPost() {
         );
     }
 
-    const userLiked = currentUser && post.likedBy.includes(currentUser.uid);
-    const userDisliked = currentUser && post.dislikedBy.includes(currentUser.uid);
     const isAuthor = currentUser && currentUser.uid === post.authorId;
 
     return (
@@ -192,46 +107,17 @@ export default function BlogPost() {
                 ))}
             </div>
 
-            <div className="post-actions">
-                <div className="like-dislike">
-                    <button
-                        onClick={handleLike}
-                        className={`action-btn like-btn btn-ripple ${userLiked ? 'active' : ''}`}
-                        title={userLiked ? 'Unlike' : 'Like'}
-                        disabled={likeLoading || dislikeLoading}
-                    >
-                        {likeLoading ? (
-                            <LoadingSpinner size="small" color="white" />
-                        ) : (
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill={userLiked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
-                                <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
-                            </svg>
-                        )}
-                        <span className="count-animate">{post.likes}</span>
-                    </button>
-                    <button
-                        onClick={handleDislike}
-                        className={`action-btn dislike-btn btn-ripple ${userDisliked ? 'active' : ''}`}
-                        title={userDisliked ? 'Remove dislike' : 'Dislike'}
-                        disabled={likeLoading || dislikeLoading}
-                    >
-                        {dislikeLoading ? (
-                            <LoadingSpinner size="small" color="white" />
-                        ) : (
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill={userDisliked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
-                                <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
-                            </svg>
-                        )}
-                        <span className="count-animate">{post.dislikes}</span>
-                    </button>
-                </div>
+            {/* Independent Likes Component */}
+            <PostLikes postId={id} currentUser={currentUser} />
 
-                {isAuthor && (
+            {/* Delete button for author */}
+            {isAuthor && (
+                <div className="post-actions">
                     <button type="button" onClick={handleDeleteClick} className="delete-btn">
                         Delete Post
                     </button>
-                )}
-            </div>
+                </div>
+            )}
 
             {showDeleteConfirm && (
                 <div className="delete-modal">
@@ -246,17 +132,8 @@ export default function BlogPost() {
                 </div>
             )}
 
-            <div className="comments-section">
-                <h2 className="comments-title">Comments ({post.comments.length})</h2>
-                {currentUser ? (
-                    <CommentForm onSubmit={handleComment} />
-                ) : (
-                    <div className="login-to-comment">
-                        <p>Please <Link to="/login">sign in</Link> to comment</p>
-                    </div>
-                )}
-                <CommentList comments={post.comments} />
-            </div>
+            {/* Independent Comments Component */}
+            <PostComments postId={id} currentUser={currentUser} />
         </article>
     );
 }

@@ -255,6 +255,66 @@ app.post('/api/posts/:id/vote', async (req, res) => {
     }
 });
 
+// GET /api/posts/:id/likes - Get likes/dislikes for a post
+app.get('/api/posts/:id/likes', async (req, res) => {
+    try {
+        const postId = parseInt(req.params.id);
+        const userId = req.query.userId as string;
+
+        const [post] = await db
+            .select({ likes: posts.likes, dislikes: posts.dislikes })
+            .from(posts)
+            .where(eq(posts.id, postId));
+
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+
+        let userLiked = false;
+        let userDisliked = false;
+
+        if (userId) {
+            const [userVote] = await db
+                .select()
+                .from(postVotes)
+                .where(and(eq(postVotes.postId, postId), eq(postVotes.userId, userId)));
+
+            if (userVote) {
+                userLiked = userVote.voteType === 'like';
+                userDisliked = userVote.voteType === 'dislike';
+            }
+        }
+
+        res.json({
+            likes: post.likes,
+            dislikes: post.dislikes,
+            userLiked,
+            userDisliked
+        });
+    } catch (error) {
+        console.error('Error fetching likes:', error);
+        res.status(500).json({ error: 'Failed to fetch likes' });
+    }
+});
+
+// GET /api/posts/:id/comments - Get comments for a post
+app.get('/api/posts/:id/comments', async (req, res) => {
+    try {
+        const postId = parseInt(req.params.id);
+
+        const postComments = await db
+            .select()
+            .from(comments)
+            .where(eq(comments.postId, postId))
+            .orderBy(desc(comments.createdAt));
+
+        res.json({ comments: postComments });
+    } catch (error) {
+        console.error('Error fetching comments:', error);
+        res.status(500).json({ error: 'Failed to fetch comments' });
+    }
+});
+
 // POST /api/posts/:id/comments - Add comment
 app.post('/api/posts/:id/comments', async (req, res) => {
     try {
