@@ -1,6 +1,7 @@
 # DevPulse - Developer Insights & Ideas
 
 A modern blogging platform for developers to share insights, ideas, and innovations. Built with React, Vite, Express, and Neon PostgreSQL.
+
 <img width="1600" height="753" alt="image" src="https://github.com/user-attachments/assets/57b9fd69-9e78-4f6c-b9e5-fb1b388b4ddd" />
 
 
