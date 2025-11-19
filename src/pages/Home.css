@@ -27,8 +27,6 @@
     margin-bottom: 1rem;
     display: inline-flex;
     align-items: center;
-    opacity: 0;
-    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .badge-text {
@@ -48,8 +46,6 @@
     top: 15px;
     color: var(--text-secondary);
     transform: rotate(5deg);
-    opacity: 0;
-    animation: drawArrow 1s ease-out 0.8s forwards;
 }
 
 @keyframes drawArrow {
@@ -87,8 +83,6 @@
     color: var(--text-primary);
     letter-spacing: -0.03em;
     margin: 0;
-    opacity: 0;
-    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
 }
 
 .highlight-text {
@@ -125,8 +119,6 @@
     max-width: 640px;
     line-height: 1.6;
     margin: 0;
-    opacity: 0;
-    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards;
 }
 
 @keyframes slideUp {
@@ -157,12 +149,9 @@
 .feature-list {
     display: flex;
     flex-wrap: nowrap;
-    /* Prevent wrapping on desktop */
     justify-content: center;
     gap: 2rem;
     margin: 1.5rem 0;
-    opacity: 0;
-    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s forwards;
 }
 
 .feature-item {
@@ -210,8 +199,6 @@
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    opacity: 0;
-    animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.8s forwards;
     position: relative;
     overflow: hidden;
     min-width: 200px;
@@ -256,8 +243,6 @@
     margin: 0 auto 4rem;
     position: relative;
     z-index: 10;
-    opacity: 0;
-    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s forwards;
 }
 
 .search-icon {
