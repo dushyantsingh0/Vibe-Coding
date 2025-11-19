@@ -14,7 +14,7 @@ export default function About() {
                 </section>
 
                 {/* Mission Section */}
-                <section className="about-section">
+                <section className="about-mission">
                     <h2>Our Mission</h2>
                     <p>
                         DevPulse is built for developers who want to share their knowledge and learn from others.
@@ -43,22 +43,10 @@ export default function About() {
                     </div>
                 </section>
 
-                {/* Tech Stack */}
-                <section className="about-section">
-                    <h2>Built With</h2>
-                    <div className="tech-stack">
-                        <span className="tech-badge">React</span>
-                        <span className="tech-badge">Vite</span>
-                        <span className="tech-badge">Express</span>
-                        <span className="tech-badge">Neon PostgreSQL</span>
-                        <span className="tech-badge">Firebase Auth</span>
-                    </div>
-                </section>
-
                 {/* CTA Section */}
                 <section className="about-cta">
                     <h2>Start Writing Today</h2>
-                    <p>Join our community of developers and share your knowledge.</p>
+                    <p>Join our community of developers and share your knowledge with the world.</p>
                     <Link to="/create" className="cta-button">Create Your First Post</Link>
                 </section>
             </div>
