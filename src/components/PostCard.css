@@ -31,12 +31,7 @@
 }
 
 .post-card:hover {
-    transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
-}
-
-.post-card:active {
-    transform: translateY(-2px);
 }
 
 .post-date {
