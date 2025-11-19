@@ -281,7 +281,9 @@
         font-size: 0.85rem;
         padding: 0.5rem 1rem;
     }
-}/* File Import Section */
+}
+
+/* File Import Section */
 .file-import-section {
     margin-bottom: 2rem;
     padding-bottom: 2rem;
@@ -331,13 +333,14 @@
     color: var(--text-tertiary);
     font-style: italic;
 }
+
 .post-content img {
     max-width: 100%;
     height: auto;
     border-radius: var(--radius-md);
     margin: 1.5rem 0;
     display: block;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
 }
 
 .preview-content img {
@@ -346,5 +349,5 @@
     border-radius: var(--radius-md);
     margin: 1.5rem 0;
     display: block;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
 }

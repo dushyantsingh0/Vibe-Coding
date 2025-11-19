@@ -8,6 +8,7 @@
     color: var(--text-secondary);
     font-size: 0.9rem;
     margin-bottom: 2rem;
+    transition: color 0.2s ease;
 }
 
 .back-link:hover {
@@ -28,7 +29,7 @@
     left: 0;
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, var(--accent-primary), #ea580c);
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
     border-radius: 2px;
 }
 
@@ -189,6 +190,15 @@
     margin: 2rem 0;
 }
 
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    margin: 1.5rem 0;
+    display: block;
+    box-shadow: var(--shadow-md);
+}
+
 .post-actions {
     margin-bottom: 3rem;
     padding: 1.5rem 0;
@@ -246,7 +256,7 @@
     border-color: var(--accent-primary);
     color: var(--accent-primary);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(234, 88, 12, 0.2);
+    box-shadow: var(--shadow-sm);
 }
 
 .action-btn:active {
@@ -303,6 +313,7 @@
     background: #dc2626;
     color: white;
     transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
 }
 
 .comments-section {
@@ -380,6 +391,7 @@
     justify-content: center;
     z-index: 1000;
     animation: fadeIn 0.2s ease-out;
+    backdrop-filter: blur(4px);
 }
 
 .delete-modal-content {
@@ -390,7 +402,7 @@
     max-width: 400px;
     width: 90%;
     animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg);
 }
 
 .delete-modal-content h3 {
@@ -438,6 +450,7 @@
 .confirm-delete-btn:hover {
     background: #b91c1c;
     transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
 }
 
 @media (max-width: 768px) {
@@ -461,20 +474,4 @@
     .delete-btn {
         width: 100%;
     }
-}.post-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--radius-md);
-    margin: 1.5rem 0;
-    display: block;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.preview-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--radius-md);
-    margin: 1.5rem 0;
-    display: block;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
