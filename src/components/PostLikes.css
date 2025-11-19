@@ -3,6 +3,11 @@
     padding: 1.5rem 0;
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .like-dislike {
@@ -98,8 +103,35 @@
     box-shadow: none;
 }
 
+.delete-btn {
+    padding: 0.625rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: transparent;
+    color: #dc2626;
+    border: 1px solid #dc2626;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+    color: white;
+    transform: translateY(-1px);
+}
+
 @media (max-width: 768px) {
+    .post-likes {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .like-dislike {
         justify-content: center;
+    }
+
+    .delete-btn {
+        width: 100%;
     }
 }

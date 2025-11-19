@@ -107,17 +107,13 @@ export default function BlogPost() {
                 ))}
             </div>
 
-            {/* Independent Likes Component */}
-            <PostLikes postId={id} currentUser={currentUser} />
-
-            {/* Delete button for author */}
-            {isAuthor && (
-                <div className="post-actions">
-                    <button type="button" onClick={handleDeleteClick} className="delete-btn">
-                        Delete Post
-                    </button>
-                </div>
-            )}
+            {/* Independent Likes Component with Delete Button */}
+            <PostLikes
+                postId={id}
+                currentUser={currentUser}
+                isAuthor={isAuthor}
+                onDelete={handleDeleteClick}
+            />
 
             {showDeleteConfirm && (
                 <div className="delete-modal">

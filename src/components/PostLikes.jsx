@@ -3,7 +3,7 @@ import LoadingSpinner from './LoadingSpinner';
 import SkeletonLoader from './SkeletonLoader';
 import './PostLikes.css';
 
-export default function PostLikes({ postId, currentUser }) {
+export default function PostLikes({ postId, currentUser, isAuthor, onDelete }) {
     const [likes, setLikes] = useState(0);
     const [dislikes, setDislikes] = useState(0);
     const [userLiked, setUserLiked] = useState(false);
@@ -151,6 +151,16 @@ export default function PostLikes({ postId, currentUser }) {
                     <span className="count-animate">{dislikes}</span>
                 </button>
             </div>
+
+            {isAuthor && onDelete && (
+                <button
+                    type="button"
+                    onClick={onDelete}
+                    className="delete-btn btn-ripple"
+                >
+                    Delete Post
+                </button>
+            )}
         </div>
     );
 }
