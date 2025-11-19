@@ -183,7 +183,7 @@
 }
 
 .feature-item:hover {
-    transform: translateY(-3px) rotate(1deg);
+    transform: rotate(1deg) scale(1.02);
     border-color: var(--accent-primary);
 }
 
@@ -246,7 +246,7 @@
 }
 
 .cta-button:hover {
-    transform: translateY(-4px) scale(1.02);
+    transform: scale(1.05);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     background: var(--accent-primary);
 }
@@ -286,7 +286,6 @@
     outline: none;
     border-color: var(--accent-primary);
     box-shadow: 0 0 0 4px var(--accent-light);
-    transform: translateY(-2px);
 }
 
 .search-input::placeholder {
@@ -322,8 +321,6 @@
     flex-direction: column;
     gap: 2rem;
     padding-bottom: 4rem;
-    opacity: 0;
-    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 1.2s forwards;
 }
 
 .no-posts {
