@@ -1,12 +1,23 @@
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { BlogProvider } from './context/BlogContext';
 import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
-import Home from './pages/Home';
-import BlogPost from './pages/BlogPost';
-import About from './pages/About';
-import CreatePost from './pages/CreatePost';
-import Login from './pages/Login';
+
+// Lazy load pages for better performance on edge devices
+const Home = lazy(() => import('./pages/Home'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+const About = lazy(() => import('./pages/About'));
+const CreatePost = lazy(() => import('./pages/CreatePost'));
+const Login = lazy(() => import('./pages/Login'));
+
+// Simple loading component for Suspense fallback
+const PageLoader = () => (
+  <div className="loading">
+    <div className="spinner"></div>
+    <p>Loading vibe...</p>
+  </div>
+);
 
 function App() {
   return (
@@ -14,13 +25,15 @@ function App() {
       <BlogProvider>
         <Router>
           <Layout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/post/:id" element={<BlogPost />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/create" element={<CreatePost />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/post/:id" element={<BlogPost />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/create" element={<CreatePost />} />
+                <Route path="/login" element={<Login />} />
+              </Routes>
+            </Suspense>
           </Layout>
         </Router>
       </BlogProvider>
