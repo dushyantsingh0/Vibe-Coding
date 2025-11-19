@@ -46,12 +46,22 @@ export default function PostLikes({ postId, currentUser, isAuthor, onDelete }) {
             return;
         }
 
-        // Optimistic update
+        // Optimistic update - FIXED
         const wasLiked = userLiked;
         const wasDisliked = userDisliked;
 
-        setLikes(prev => wasLiked ? prev - 1 : prev + (wasDisliked ? 2 : 1));
-        setDislikes(prev => wasDisliked ? prev - 1 : prev);
+        if (wasLiked) {
+            // Removing like
+            setLikes(prev => prev - 1);
+        } else {
+            // Adding like
+            setLikes(prev => prev + 1);
+            // If was disliked, also remove the dislike
+            if (wasDisliked) {
+                setDislikes(prev => prev - 1);
+            }
+        }
+
         setUserLiked(!wasLiked);
         setUserDisliked(false);
 
@@ -83,12 +93,22 @@ export default function PostLikes({ postId, currentUser, isAuthor, onDelete }) {
             return;
         }
 
-        // Optimistic update
+        // Optimistic update - FIXED
         const wasLiked = userLiked;
         const wasDisliked = userDisliked;
 
-        setLikes(prev => wasLiked ? prev - 1 : prev);
-        setDislikes(prev => wasDisliked ? prev - 1 : prev + (wasLiked ? 2 : 1));
+        if (wasDisliked) {
+            // Removing dislike
+            setDislikes(prev => prev - 1);
+        } else {
+            // Adding dislike
+            setDislikes(prev => prev + 1);
+            // If was liked, also remove the like
+            if (wasLiked) {
+                setLikes(prev => prev - 1);
+            }
+        }
+
         setUserLiked(false);
         setUserDisliked(!wasDisliked);
 
