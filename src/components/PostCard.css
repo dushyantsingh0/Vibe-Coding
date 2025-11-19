@@ -33,7 +33,6 @@
 .post-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
-    border-left-width: 6px;
 }
 
 .post-card:active {
