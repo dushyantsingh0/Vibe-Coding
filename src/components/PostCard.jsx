@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import './PostCard.css';
 
-export default function PostCard({ post }) {
+export default function PostCard({ post, featured = false }) {
     return (
-        <Link to={`/post/${post.id}`} className="post-card">
+        <Link to={`/post/${post.id}`} className={`post-card ${featured ? 'featured' : ''}`}>
             <time className="post-date">{new Date(post.date).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',

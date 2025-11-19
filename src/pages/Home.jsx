@@ -106,8 +106,8 @@ export default function Home() {
                     </p>
                 ) : (
                     <>
-                        {filteredPosts.map(post => (
-                            <PostCard key={post.id} post={post} />
+                        {filteredPosts.map((post, index) => (
+                            <PostCard key={post.id} post={post} featured={index === 0} />
                         ))}
 
                         {!searchQuery && pagination && pagination.totalPages > 1 && (

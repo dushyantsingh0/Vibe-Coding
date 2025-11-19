@@ -334,6 +334,21 @@
 }
 
 /* Responsive */
+/* Large screens - 3 columns */
+@media (min-width: 1024px) {
+    .posts {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Tablet - 2 columns */
+@media (min-width: 769px) and (max-width: 1023px) {
+    .posts {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile and general responsive */
 @media (max-width: 768px) {
     .hero-section {
         padding: 4rem 1rem 2rem;
@@ -355,5 +370,9 @@
 
     .arrow-doodle {
         display: none;
+    }
+
+    .posts {
+        grid-template-columns: 1fr;
     }
 }

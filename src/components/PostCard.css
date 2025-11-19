@@ -32,6 +32,26 @@
 
 .post-card:hover {
     box-shadow: var(--shadow-lg);
+    border-left-width: 6px;
+}
+
+/* Featured Post Variant */
+.post-card.featured {
+    background: linear-gradient(135deg, #ffffff 0%, var(--bg-secondary) 100%);
+}
+
+@media (min-width: 1024px) {
+    .post-card.featured {
+        grid-column: span 2;
+    }
+
+    .post-card.featured .post-title {
+        font-size: 2rem;
+    }
+
+    .post-card.featured .post-excerpt {
+        font-size: 1.05rem;
+    }
 }
 
 .post-date {
