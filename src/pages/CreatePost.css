@@ -60,6 +60,143 @@
     min-height: 300px;
     resize: vertical;
     line-height: 1.6;
+    font-family: 'Courier New', monospace;
+}
+
+/* Editor Tabs */
+.editor-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.tab-btn {
+    padding: 0.625rem 1.25rem;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.tab-btn.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.2);
+}
+
+/* Preview Pane */
+.preview-pane {
+    min-height: 300px;
+    padding: 1.5rem;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+.preview-placeholder {
+    color: var(--text-tertiary);
+    font-style: italic;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.preview-content {
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+.preview-content h1,
+.preview-content h2,
+.preview-content h3,
+.preview-content h4,
+.preview-content h5,
+.preview-content h6 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-serif);
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.preview-content h1 {
+    font-size: 2rem;
+}
+
+.preview-content h2 {
+    font-size: 1.75rem;
+}
+
+.preview-content h3 {
+    font-size: 1.5rem;
+}
+
+.preview-content p {
+    margin-bottom: 1rem;
+}
+
+.preview-content ul,
+.preview-content ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.preview-content li {
+    margin-bottom: 0.5rem;
+}
+
+.preview-content code {
+    background: rgba(234, 88, 12, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: var(--accent-primary);
+}
+
+.preview-content pre {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.preview-content pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-primary);
+}
+
+.preview-content blockquote {
+    border-left: 4px solid var(--accent-primary);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.preview-content a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.preview-content a:hover {
+    border-bottom-color: var(--accent-primary);
 }
 
 .submit-btn {
@@ -134,5 +271,14 @@
     .form-group input,
     .form-group textarea {
         font-size: 0.9375rem;
+    }
+
+    .preview-pane {
+        max-height: 400px;
+    }
+
+    .tab-btn {
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
     }
 }

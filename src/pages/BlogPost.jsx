@@ -1,9 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import { useAuth } from '../context/AuthContext';
 import PostLikes from '../components/PostLikes';
 import PostComments from '../components/PostComments';
 import './BlogPost.css';
+
+// Configure marked for better rendering
+marked.setOptions({
+    breaks: true,
+    gfm: true,
+});
+
 
 export default function BlogPost() {
     const { id } = useParams();
@@ -102,10 +111,11 @@ export default function BlogPost() {
             </header>
 
             <div className="post-content">
-                {post.content.split('\n\n').map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                ))}
+                <div dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(marked(post.content))
+                }} />
             </div>
+
 
             {/* Independent Likes Component with Delete Button */}
             <PostLikes
