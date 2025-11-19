@@ -179,6 +179,45 @@ app.post('/api/posts', async (req, res) => {
     }
 });
 
+// PUT /api/posts/:id - Update existing post
+app.put('/api/posts/:id', async (req, res) => {
+    try {
+        const postId = parseInt(req.params.id);
+        const { title, excerpt, content } = req.body;
+
+        if (!title || !excerpt || !content) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        // Check if post exists
+        const [existingPost] = await db
+            .select()
+            .from(posts)
+            .where(eq(posts.id, postId));
+
+        if (!existingPost) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+
+        // Update the post
+        const [updatedPost] = await db
+            .update(posts)
+            .set({
+                title,
+                excerpt,
+                content,
+                updatedAt: new Date(),
+            })
+            .where(eq(posts.id, postId))
+            .returning();
+
+        res.json(updatedPost);
+    } catch (error) {
+        console.error('Error updating post:', error);
+        res.status(500).json({ error: 'Failed to update post' });
+    }
+});
+
 // POST /api/posts/:id/vote - Like/dislike/toggle vote
 app.post('/api/posts/:id/vote', async (req, res) => {
     try {
