@@ -114,8 +114,8 @@
 
 .user-profile:hover {
   box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-  border-color: var(--accent-light);
+  transform: translateY(-2px);
+  border-color: var(--border-hover);
 }
 
 .user-avatar {
@@ -148,6 +148,8 @@
 .sign-out-btn:hover {
   background: var(--accent-light);
   color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .main {
