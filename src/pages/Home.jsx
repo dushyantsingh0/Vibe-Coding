@@ -67,7 +67,7 @@ export default function Home() {
                     </div>
 
                     <Link to="/create" className="cta-button btn-ripple">
-                        Start Writing →
+                        <span>Start Writing →</span>
                     </Link>
                 </div>
             </section>
