@@ -1,14 +1,14 @@
 .about {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 2rem 1.5rem 4rem;
+    padding: 4rem 1.5rem 6rem;
 }
 
 /* About Hero */
 .about-hero {
     text-align: center;
-    padding: 4rem 1rem;
-    margin-bottom: 3rem;
+    padding: 2rem 1rem 4rem;
+    margin-bottom: 2rem;
     opacity: 0;
     animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
@@ -48,7 +48,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    margin-bottom: 5rem;
+    margin-bottom: 6rem;
 }
 
 .about-card {
@@ -62,6 +62,9 @@
     animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .about-card:nth-child(2) {
@@ -79,21 +82,22 @@
 }
 
 .card-icon {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 1.5rem;
     background: var(--bg-secondary);
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 20px;
-    transform: rotate(-5deg);
+    border-radius: 16px;
+    transform: rotate(-3deg);
     transition: transform 0.3s ease;
 }
 
 .about-card:hover .card-icon {
-    transform: rotate(5deg) scale(1.1);
+    transform: rotate(3deg) scale(1.1);
+    background: var(--accent-light);
 }
 
 .about-card h2 {
@@ -101,11 +105,13 @@
     margin-bottom: 1rem;
     color: var(--text-primary);
     font-family: var(--font-sans);
+    font-weight: 700;
 }
 
 .about-card p {
     color: var(--text-secondary);
     line-height: 1.7;
+    font-size: 1.05rem;
 }
 
 /* Values List */
@@ -133,69 +139,53 @@
 
 /* Join Section */
 .join-section {
-    background: linear-gradient(135deg, var(--text-primary) 0%, #2d3748 100%);
+    background: var(--bg-card);
+    border: 2px dashed var(--border-color);
     border-radius: 32px;
-    padding: 4rem 2rem;
+    padding: 5rem 2rem;
     text-align: center;
-    color: white;
     position: relative;
     overflow: hidden;
     opacity: 0;
     animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s forwards;
 }
 
-.join-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at top right, rgba(234, 88, 12, 0.2), transparent 60%);
-}
-
 .join-content {
     position: relative;
     z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .join-section h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     font-family: var(--font-serif);
+    color: var(--text-primary);
 }
 
 .join-section p {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-secondary);
     font-size: 1.2rem;
-    max-width: 500px;
-    margin: 0 auto 3rem;
+    margin-bottom: 2.5rem;
 }
 
-.join-stats {
-    display: flex;
-    justify-content: center;
-    gap: 4rem;
-    flex-wrap: wrap;
+.join-btn {
+    display: inline-block;
+    background: var(--text-primary);
+    color: white;
+    font-weight: 700;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.stat {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--accent-primary);
-}
-
-.stat-label {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: rgba(255, 255, 255, 0.6);
+.join-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background: var(--accent-primary);
 }
 
 @media (max-width: 768px) {
@@ -203,7 +193,7 @@
         font-size: 2.5rem;
     }
 
-    .join-stats {
-        gap: 2rem;
+    .join-section {
+        padding: 3rem 1.5rem;
     }
 }
