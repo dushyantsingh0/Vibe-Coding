@@ -5,6 +5,7 @@ import DOMPurify from 'dompurify';
 import { useAuth } from '../context/AuthContext';
 import PostLikes from '../components/PostLikes';
 import PostComments from '../components/PostComments';
+import ShareModal from '../components/ShareModal';
 import './BlogPost.css';
 
 // Configure marked for better rendering
@@ -21,6 +22,7 @@ export default function BlogPost() {
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [showShareModal, setShowShareModal] = useState(false);
 
     const fetchPost = async () => {
         try {
@@ -118,12 +120,24 @@ export default function BlogPost() {
 
 
             {/* Independent Likes Component with Delete Button */}
-            <PostLikes
-                postId={id}
-                currentUser={currentUser}
-                isAuthor={isAuthor}
-                onDelete={handleDeleteClick}
-            />
+            <div className="post-actions-bar">
+                <PostLikes
+                    postId={id}
+                    currentUser={currentUser}
+                    isAuthor={isAuthor}
+                    onDelete={handleDeleteClick}
+                />
+                <button onClick={() => setShowShareModal(true)} className="share-btn btn-ripple" title="Share this post">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="18" cy="5" r="3"></circle>
+                        <circle cx="6" cy="12" r="3"></circle>
+                        <circle cx="18" cy="19" r="3"></circle>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                    Share
+                </button>
+            </div>
 
             {showDeleteConfirm && (
                 <div className="delete-modal">
@@ -137,6 +151,12 @@ export default function BlogPost() {
                     </div>
                 </div>
             )}
+
+            <ShareModal
+                isOpen={showShareModal}
+                onClose={() => setShowShareModal(false)}
+                post={post}
+            />
 
             {/* Independent Comments Component */}
             <PostComments postId={id} currentUser={currentUser} />
