@@ -44,10 +44,10 @@
 
 .arrow-doodle {
     position: absolute;
-    right: -60px;
-    top: 25px;
+    right: -50px;
+    top: 15px;
     color: var(--text-secondary);
-    transform: rotate(10deg);
+    transform: rotate(5deg);
     opacity: 0;
     animation: drawArrow 1s ease-out 0.8s forwards;
 }
