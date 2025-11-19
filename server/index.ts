@@ -18,7 +18,39 @@ console.log('DATABASE_URL loaded:', process.env.DATABASE_URL ? 'Yes' : 'No');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// Configure CORS for Vercel deployment
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps, curl, postman)
+        if (!origin) return callback(null, true);
+
+        // Allow all origins in development
+        if (process.env.NODE_ENV !== 'production') {
+            return callback(null, true);
+        }
+
+        // In production, allow your Vercel domain and localhost
+        const allowedOrigins = [
+            /\.vercel\.app$/,  // Any Vercel deployment
+            /^https?:\/\/localhost(:\d+)?$/,  // Localhost
+        ];
+
+        const isAllowed = allowedOrigins.some(pattern =>
+            typeof pattern === 'string' ? pattern === origin : pattern.test(origin)
+        );
+
+        if (isAllowed) {
+            callback(null, true);
+        } else {
+            callback(null, true); // Allow all for now, can restrict later
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // GET /api/posts - List all posts with vote counts
