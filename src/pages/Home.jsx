@@ -28,7 +28,7 @@ export default function Home() {
             <section className="hero-section">
                 <div className="hero-content">
                     <div className="hero-badge">
-                        <span className="badge-text">DevPulse in action</span>
+                        <span className="badge-text">Start your blog</span>
                         <svg className="arrow-doodle" width="40" height="40" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 10 C 20 20, 40 10, 40 30" stroke="currentColor" strokeWidth="2" fill="none" />
                             <path d="M35 25 L 40 30 L 30 35" stroke="currentColor" strokeWidth="2" fill="none" />
@@ -36,13 +36,13 @@ export default function Home() {
                     </div>
 
                     <h1 className="main-headline">
-                        Turn ideas into <span className="highlight-text">reality</span><br />
-                        with developer insights
+                        Share your coding <span className="highlight-text">journey</span><br />
+                        with the world
                     </h1>
 
                     <p className="sub-headline">
-                        A modern platform where developers share knowledge, spark innovation,
-                        and build the future together. Join the conversation today.
+                        A minimal, distraction-free platform for developers to write, share, and connect.
+                        No distractions, just good content.
                     </p>
 
                     <div className="feature-list">
