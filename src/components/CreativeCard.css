@@ -2,17 +2,15 @@
     width: 1200px;
     height: 630px;
     /* Facebook/Twitter OG Image size */
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    background: #ffffff;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     padding: 60px;
     box-sizing: border-box;
-    color: white;
+    color: #1a1a1a;
     font-family: 'Inter', sans-serif;
-    /* Ensure it's hidden when not in modal preview, but we need it visible for capture. 
-       Usually we render it off-screen or in a hidden div for capture. */
 }
 
 .creative-card-content {
@@ -22,12 +20,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 24px;
     padding: 48px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
@@ -41,10 +39,10 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.05);
     padding: 8px 16px;
     border-radius: 100px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .brand-icon {
@@ -55,7 +53,7 @@
     font-weight: 700;
     font-size: 18px;
     letter-spacing: 0.5px;
-    background: linear-gradient(to right, #fff, #ccc);
+    background: linear-gradient(to right, #1a1a1a, #4a4a4a);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -63,7 +61,7 @@
 
 .card-date {
     font-size: 18px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(0, 0, 0, 0.6);
     font-weight: 500;
 }
 
@@ -79,11 +77,11 @@
     line-height: 1.1;
     font-weight: 800;
     margin: 0 0 24px 0;
-    background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+    background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    text-shadow: none;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     line-clamp: 3;
@@ -94,7 +92,7 @@
 .card-excerpt {
     font-size: 24px;
     line-height: 1.5;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(0, 0, 0, 0.7);
     margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -109,7 +107,7 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 32px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     padding-top: 32px;
 }
 
@@ -124,7 +122,7 @@
     height: 64px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(0, 0, 0, 0.1);
 }
 
 .author-avatar-placeholder {
@@ -138,7 +136,7 @@
     font-size: 28px;
     font-weight: 700;
     color: white;
-    border: 3px solid rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(0, 0, 0, 0.1);
 }
 
 .author-details {
@@ -149,12 +147,12 @@
 .author-name {
     font-size: 20px;
     font-weight: 700;
-    color: white;
+    color: #1a1a1a;
 }
 
 .author-label {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -162,11 +160,11 @@
 .read-more-tag {
     font-size: 16px;
     font-weight: 600;
-    color: #8b5cf6;
-    background: rgba(139, 92, 246, 0.1);
+    color: #6366f1;
+    background: rgba(99, 102, 241, 0.1);
     padding: 12px 24px;
     border-radius: 100px;
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
 /* Background Decorations */
@@ -180,7 +178,7 @@
 .circle-1 {
     width: 400px;
     height: 400px;
-    background: rgba(99, 102, 241, 0.15);
+    background: rgba(99, 102, 241, 0.1);
     top: -100px;
     right: -100px;
 }
