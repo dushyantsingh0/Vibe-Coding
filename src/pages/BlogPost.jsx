@@ -4,6 +4,7 @@ import { useBlog } from '../context/BlogContext';
 import { useAuth } from '../context/AuthContext';
 import CommentForm from '../components/CommentForm';
 import CommentList from '../components/CommentList';
+import LoadingSpinner from '../components/LoadingSpinner';
 import './BlogPost.css';
 
 export default function BlogPost() {
@@ -14,12 +15,15 @@ export default function BlogPost() {
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [likeLoading, setLikeLoading] = useState(false);
+    const [dislikeLoading, setDislikeLoading] = useState(false);
 
     const fetchPost = async () => {
         try {
             setLoading(true);
             const userId = currentUser?.uid || '';
-            const response = await fetch(`http://localhost:3001/api/posts/${id}?userId=${userId}`);
+            const API_URL = import.meta.env.VITE_API_URL || '/api';
+            const response = await fetch(`${API_URL}/posts/${id}?userId=${userId}`);
             if (!response.ok) throw new Error('Post not found');
             const data = await response.json();
 
@@ -61,8 +65,29 @@ export default function BlogPost() {
             alert('Please sign in to like posts');
             return;
         }
-        await updatePostLikes(post.id, 'like', currentUser.uid);
-        await fetchPost();
+
+        // Optimistic update
+        const wasLiked = post.likedBy.includes(currentUser.uid);
+        const wasDisliked = post.dislikedBy.includes(currentUser.uid);
+
+        setPost(prev => ({
+            ...prev,
+            likes: wasLiked ? prev.likes - 1 : prev.likes + (wasDisliked ? 2 : 1),
+            dislikes: wasDisliked ? prev.dislikes - 1 : prev.dislikes,
+            likedBy: wasLiked ? prev.likedBy.filter(id => id !== currentUser.uid) : [...prev.likedBy, currentUser.uid],
+            dislikedBy: wasDisliked ? prev.dislikedBy.filter(id => id !== currentUser.uid) : prev.dislikedBy
+        }));
+
+        setLikeLoading(true);
+        try {
+            await updatePostLikes(post.id, 'like', currentUser.uid);
+            await fetchPost(); // Sync with server
+        } catch (error) {
+            // Revert on error
+            await fetchPost();
+        } finally {
+            setLikeLoading(false);
+        }
     };
 
     const handleDislike = async () => {
@@ -70,8 +95,29 @@ export default function BlogPost() {
             alert('Please sign in to dislike posts');
             return;
         }
-        await updatePostLikes(post.id, 'dislike', currentUser.uid);
-        await fetchPost();
+
+        // Optimistic update
+        const wasLiked = post.likedBy.includes(currentUser.uid);
+        const wasDisliked = post.dislikedBy.includes(currentUser.uid);
+
+        setPost(prev => ({
+            ...prev,
+            likes: wasLiked ? prev.likes - 1 : prev.likes,
+            dislikes: wasDisliked ? prev.dislikes - 1 : prev.dislikes + (wasLiked ? 2 : 1),
+            likedBy: wasLiked ? prev.likedBy.filter(id => id !== currentUser.uid) : prev.likedBy,
+            dislikedBy: wasDisliked ? prev.dislikedBy.filter(id => id !== currentUser.uid) : [...prev.dislikedBy, currentUser.uid]
+        }));
+
+        setDislikeLoading(true);
+        try {
+            await updatePostLikes(post.id, 'dislike', currentUser.uid);
+            await fetchPost(); // Sync with server
+        } catch (error) {
+            // Revert on error
+            await fetchPost();
+        } finally {
+            setDislikeLoading(false);
+        }
     };
 
     const handleComment = async (commentText) => {
@@ -150,23 +196,33 @@ export default function BlogPost() {
                 <div className="like-dislike">
                     <button
                         onClick={handleLike}
-                        className={`action-btn like-btn ${userLiked ? 'active' : ''}`}
+                        className={`action-btn like-btn btn-ripple ${userLiked ? 'active' : ''}`}
                         title={userLiked ? 'Unlike' : 'Like'}
+                        disabled={likeLoading || dislikeLoading}
                     >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill={userLiked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
-                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
-                        </svg>
-                        <span>{post.likes}</span>
+                        {likeLoading ? (
+                            <LoadingSpinner size="small" color="white" />
+                        ) : (
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill={userLiked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+                                <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                            </svg>
+                        )}
+                        <span className="count-animate">{post.likes}</span>
                     </button>
                     <button
                         onClick={handleDislike}
-                        className={`action-btn dislike-btn ${userDisliked ? 'active' : ''}`}
+                        className={`action-btn dislike-btn btn-ripple ${userDisliked ? 'active' : ''}`}
                         title={userDisliked ? 'Remove dislike' : 'Dislike'}
+                        disabled={likeLoading || dislikeLoading}
                     >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill={userDisliked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
-                            <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
-                        </svg>
-                        <span>{post.dislikes}</span>
+                        {dislikeLoading ? (
+                            <LoadingSpinner size="small" color="white" />
+                        ) : (
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill={userDisliked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+                                <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                            </svg>
+                        )}
+                        <span className="count-animate">{post.dislikes}</span>
                     </button>
                 </div>
 
