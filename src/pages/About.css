@@ -20,7 +20,7 @@
     font-size: 4.5rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     background: var(--gradient-text);
     -webkit-background-clip: text;
     background-clip: text;
@@ -34,6 +34,7 @@
     line-height: 1.6;
     max-width: 700px;
     margin: 0 auto;
+    font-family: var(--font-sans);
 }
 
 /* Mission Section */
@@ -50,13 +51,14 @@
     font-weight: 700;
     margin-bottom: 1.5rem;
     color: var(--text-primary);
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
 }
 
 .about-mission p {
     font-size: 1.25rem;
     line-height: 1.8;
     color: var(--text-secondary);
+    font-family: var(--font-sans);
 }
 
 /* Features Grid */
@@ -119,7 +121,7 @@
     font-weight: 800;
     margin-bottom: 1.5rem;
     color: var(--text-primary);
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
 }
 
 .about-cta p {
