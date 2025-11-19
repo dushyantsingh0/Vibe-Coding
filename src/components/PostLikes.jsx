@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import LoadingSpinner from './LoadingSpinner';
 import SkeletonLoader from './SkeletonLoader';
 import './PostLikes.css';
@@ -152,14 +153,21 @@ export default function PostLikes({ postId, currentUser, isAuthor, onDelete }) {
                 </button>
             </div>
 
-            {isAuthor && onDelete && (
-                <button
-                    type="button"
-                    onClick={onDelete}
-                    className="delete-btn btn-ripple"
-                >
-                    Delete Post
-                </button>
+            {isAuthor && (
+                <div className="author-actions">
+                    <Link to={`/edit/${postId}`} className="edit-btn btn-ripple">
+                        Edit Post
+                    </Link>
+                    {onDelete && (
+                        <button
+                            type="button"
+                            onClick={onDelete}
+                            className="delete-btn btn-ripple"
+                        >
+                            Delete Post
+                        </button>
+                    )}
+                </div>
             )}
         </div>
     );

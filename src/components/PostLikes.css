@@ -134,4 +134,32 @@
     .delete-btn {
         width: 100%;
     }
+}.author-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.edit-btn {
+    padding: 0.625rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.edit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+    color: white;
+}
+
+.edit-btn:active {
+    transform: translateY(0);
 }

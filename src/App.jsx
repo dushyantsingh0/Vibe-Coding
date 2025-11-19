@@ -9,6 +9,7 @@ const Home = lazy(() => import('./pages/Home'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const About = lazy(() => import('./pages/About'));
 const CreatePost = lazy(() => import('./pages/CreatePost'));
+const EditPost = lazy(() => import('./pages/EditPost'));
 const Login = lazy(() => import('./pages/Login'));
 
 // Simple loading component for Suspense fallback
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/post/:id" element={<BlogPost />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/create" element={<CreatePost />} />
+                <Route path="/edit/:id" element={<EditPost />} />
                 <Route path="/login" element={<Login />} />
               </Routes>
             </Suspense>
