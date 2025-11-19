@@ -53,13 +53,24 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// GET /api/posts - List all posts with vote counts
+// GET /api/posts - List all posts with vote counts and pagination
 app.get('/api/posts', async (req, res) => {
     try {
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const offset = (page - 1) * limit;
+
+        // Get total count of posts
+        const totalCountResult = await db.select({ count: sql<number>`count(*)` }).from(posts);
+        const totalPosts = Number(totalCountResult[0]?.count || 0);
+        const totalPages = Math.ceil(totalPosts / limit);
+
         const allPosts = await db
             .select()
             .from(posts)
-            .orderBy(desc(posts.createdAt));
+            .orderBy(desc(posts.createdAt))
+            .limit(limit)
+            .offset(offset);
 
         // Get vote counts and comments count for each post
         const postsWithCounts = await Promise.all(
@@ -77,7 +88,16 @@ app.get('/api/posts', async (req, res) => {
             })
         );
 
-        res.json(postsWithCounts);
+        res.json({
+            posts: postsWithCounts,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalPosts,
+                hasNextPage: page < totalPages,
+                hasPrevPage: page > 1
+            }
+        });
     } catch (error) {
         console.error('Error fetching posts:', error);
         res.status(500).json({ error: 'Failed to fetch posts' });

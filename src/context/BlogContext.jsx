@@ -7,21 +7,36 @@ const API_URL = import.meta.env.VITE_API_URL || '/api';
 export function BlogProvider({ children }) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [pagination, setPagination] = useState({
+        currentPage: 1,
+        totalPages: 1,
+        totalPosts: 0,
+        hasNextPage: false,
+        hasPrevPage: false
+    });
 
-    // Fetch all posts on mount
+    // Fetch posts on mount
     useEffect(() => {
-        fetchPosts();
+        fetchPosts(1);
     }, []);
 
-    const fetchPosts = async () => {
+    const fetchPosts = async (page = 1) => {
         try {
             setLoading(true);
-            const response = await fetch(`${API_URL}/posts`);
+            const response = await fetch(`${API_URL}/posts?page=${page}&limit=5`);
             if (!response.ok) throw new Error('Failed to fetch posts');
             const data = await response.json();
 
+            // Handle both old (array) and new (paginated) API responses for backward compatibility during migration
+            const postsData = Array.isArray(data) ? data : data.posts;
+            const paginationData = Array.isArray(data) ? null : data.pagination;
+
+            if (paginationData) {
+                setPagination(paginationData);
+            }
+
             // Transform API data to match frontend format
-            const transformedPosts = data.map(post => ({
+            const transformedPosts = postsData.map(post => ({
                 id: post.id,
                 title: post.title,
                 date: new Date(post.createdAt).toISOString().split('T')[0],
@@ -143,10 +158,12 @@ export function BlogProvider({ children }) {
     const value = {
         posts,
         loading,
+        pagination,
         addPost,
         updatePostLikes,
         addComment,
-        refreshPosts: fetchPosts
+        refreshPosts: () => fetchPosts(pagination.currentPage),
+        changePage: fetchPosts
     };
 
     return <BlogContext.Provider value={value}>{children}</BlogContext.Provider>;

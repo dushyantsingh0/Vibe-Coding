@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useBlog } from '../context/BlogContext';
 import PostCard from '../components/PostCard';
+import '../components/Pagination.css';
 import './Home.css';
 
 export default function Home() {
-    const { posts, loading, refreshPosts } = useBlog();
+    const { posts, loading, refreshPosts, pagination, changePage } = useBlog();
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
@@ -19,7 +20,10 @@ export default function Home() {
                     <h1 className="hero-title">DevPulse</h1>
                     <p className="hero-subtitle">Where developers share insights, ideas, and innovations.</p>
                 </section>
-                <div className="loading">Loading posts...</div>
+                <div className="loading">
+                    <div className="spinner"></div>
+                    <p>Loading posts...</p>
+                </div>
             </div>
         );
     }
@@ -69,9 +73,42 @@ export default function Home() {
                         {searchQuery ? `No posts found matching "${searchQuery}"` : 'No posts yet. Share your first insight!'}
                     </p>
                 ) : (
-                    filteredPosts.map(post => (
-                        <PostCard key={post.id} post={post} />
-                    ))
+                    <>
+                        {filteredPosts.map(post => (
+                            <PostCard key={post.id} post={post} />
+                        ))}
+
+                        {/* Pagination Controls - Only show if not searching and pagination data exists */}
+                        {!searchQuery && pagination && pagination.totalPages > 1 && (
+                            <div className="pagination-container">
+                                <button
+                                    className="pagination-btn"
+                                    disabled={!pagination.hasPrevPage}
+                                    onClick={() => changePage(pagination.currentPage - 1)}
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M15 18l-6-6 6-6" />
+                                    </svg>
+                                    Previous
+                                </button>
+
+                                <div className="pagination-info">
+                                    Page <span>{pagination.currentPage}</span> of <span>{pagination.totalPages}</span>
+                                </div>
+
+                                <button
+                                    className="pagination-btn"
+                                    disabled={!pagination.hasNextPage}
+                                    onClick={() => changePage(pagination.currentPage + 1)}
+                                >
+                                    Next
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M9 18l6-6-6-6" />
+                                    </svg>
+                                </button>
+                            </div>
+                        )}
+                    </>
                 )}
             </section>
         </div>
