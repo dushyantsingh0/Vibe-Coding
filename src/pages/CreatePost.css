@@ -281,4 +281,53 @@
         font-size: 0.85rem;
         padding: 0.5rem 1rem;
     }
+}/* File Import Section */
+.file-import-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.file-import-label {
+    display: block;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.file-import-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.file-import-btn {
+    display: inline-block;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.2);
+    width: fit-content;
+}
+
+.file-import-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(234, 88, 12, 0.3);
+}
+
+.file-import-btn:active {
+    transform: translateY(0);
+}
+
+.file-import-hint {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    font-style: italic;
 }

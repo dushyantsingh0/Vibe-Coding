@@ -47,6 +47,89 @@ export default function CreatePost() {
         return { __html: cleanHtml };
     };
 
+    const handleFileImport = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!['txt', 'md'].includes(fileExtension)) {
+            alert('Please select a .txt or .md file');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const fileContent = event.target.result;
+            parseFileContent(fileContent, fileExtension);
+        };
+        reader.readAsText(file);
+    };
+
+    const parseFileContent = (content, extension) => {
+        let parsedTitle = '';
+        let parsedExcerpt = '';
+        let parsedContent = content;
+
+        if (extension === 'md') {
+            // Check for YAML frontmatter
+            const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+            const match = content.match(frontmatterRegex);
+
+            if (match) {
+                // Parse frontmatter
+                const frontmatter = match[1];
+                parsedContent = match[2].trim();
+
+                const titleMatch = frontmatter.match(/title:\s*(.+)/);
+                const excerptMatch = frontmatter.match(/excerpt:\s*(.+)/);
+
+                if (titleMatch) parsedTitle = titleMatch[1].trim().replace(/['"]/g, '');
+                if (excerptMatch) parsedExcerpt = excerptMatch[1].trim().replace(/['"]/g, '');
+            }
+
+            // If no frontmatter or missing fields, extract from content
+            if (!parsedTitle) {
+                const h1Match = parsedContent.match(/^#\s+(.+)$/m);
+                if (h1Match) {
+                    parsedTitle = h1Match[1].trim();
+                    // Remove the H1 from content
+                    parsedContent = parsedContent.replace(/^#\s+.+$/m, '').trim();
+                }
+            }
+
+            if (!parsedExcerpt) {
+                // Extract first paragraph as excerpt
+                const paragraphs = parsedContent.split('\n\n');
+                const firstParagraph = paragraphs.find(p => p.trim() && !p.startsWith('#'));
+                if (firstParagraph) {
+                    // Strip markdown formatting for excerpt
+                    parsedExcerpt = firstParagraph
+                        .replace(/[*_`#\[\]]/g, '')
+                        .substring(0, 150)
+                        .trim();
+                }
+            }
+        } else if (extension === 'txt') {
+            // For .txt files, first line is title
+            const lines = content.split('\n');
+            parsedTitle = lines[0].trim();
+
+            // Second paragraph or first 150 chars as excerpt
+            const remainingContent = lines.slice(1).join('\n').trim();
+            const paragraphs = remainingContent.split('\n\n');
+            parsedExcerpt = paragraphs[0]?.substring(0, 150).trim() || '';
+
+            // Rest is content
+            parsedContent = remainingContent;
+        }
+
+        // Set the form fields
+        setTitle(parsedTitle);
+        setExcerpt(parsedExcerpt);
+        setContent(parsedContent);
+        setActiveTab('edit');
+    };
+
     if (!currentUser) {
         return null;
     }
@@ -56,6 +139,28 @@ export default function CreatePost() {
             <h1>Share Your Insights</h1>
 
             <form onSubmit={handleSubmit} className="post-form">
+                {/* File Import Section */}
+                <div className="file-import-section">
+                    <label className="file-import-label">
+                        📄 Import from File
+                    </label>
+                    <div className="file-import-controls">
+                        <input
+                            type="file"
+                            id="file-import"
+                            accept=".txt,.md"
+                            onChange={handleFileImport}
+                            style={{ display: 'none' }}
+                        />
+                        <label htmlFor="file-import" className="file-import-btn">
+                            📁 Choose File (.txt or .md)
+                        </label>
+                        <span className="file-import-hint">
+                            Import post content from a text or markdown file
+                        </span>
+                    </div>
+                </div>
+
                 <div className="form-group">
                     <label htmlFor="title">Title</label>
                     <input
