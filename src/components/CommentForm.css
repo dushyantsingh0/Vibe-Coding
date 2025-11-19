@@ -1,0 +1,55 @@
+.comment-form {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.comment-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    resize: vertical;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
+}
+
+.comment-form textarea::placeholder {
+    color: var(--text-tertiary);
+}
+
+.comment-form button {
+    margin-top: 1rem;
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.2);
+}
+
+.comment-form button:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(234, 88, 12, 0.3);
+}
+
+.comment-form button:active {
+    transform: translateY(0);
+}
