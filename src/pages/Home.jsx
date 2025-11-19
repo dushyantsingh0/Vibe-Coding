@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useBlog } from '../context/BlogContext';
 import PostCard from '../components/PostCard';
 import '../components/Pagination.css';
@@ -9,24 +10,8 @@ export default function Home() {
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        // Refresh posts when component mounts to ensure we have latest data
         refreshPosts();
     }, []);
-
-    if (loading) {
-        return (
-            <div className="home">
-                <section className="hero">
-                    <h1 className="hero-title">DevPulse</h1>
-                    <p className="hero-subtitle">Where developers share insights, ideas, and innovations.</p>
-                </section>
-                <div className="loading">
-                    <div className="spinner"></div>
-                    <p>Loading posts...</p>
-                </div>
-            </div>
-        );
-    }
 
     // Filter posts based on search query
     const filteredPosts = posts.filter(post => {
@@ -40,9 +25,51 @@ export default function Home() {
 
     return (
         <div className="home">
-            <section className="hero">
-                <h1 className="hero-title">DevPulse</h1>
-                <p className="hero-subtitle">Where developers share insights, ideas, and innovations.</p>
+            <section className="hero-section">
+                <div className="hero-content">
+                    <div className="hero-badge">
+                        <span className="badge-text">DevPulse in action</span>
+                        <svg className="arrow-doodle" width="40" height="40" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 10 C 20 20, 40 10, 40 30" stroke="currentColor" strokeWidth="2" fill="none" />
+                            <path d="M35 25 L 40 30 L 30 35" stroke="currentColor" strokeWidth="2" fill="none" />
+                        </svg>
+                    </div>
+
+                    <h1 className="main-headline">
+                        Turn ideas into <span className="highlight-text">reality</span><br />
+                        with developer insights
+                    </h1>
+
+                    <p className="sub-headline">
+                        A modern platform where developers share knowledge, spark innovation,
+                        and build the future together. Join the conversation today.
+                    </p>
+
+                    <div className="feature-list">
+                        <div className="feature-item">
+                            <svg className="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                <path d="M20 6L9 17l-5-5" />
+                            </svg>
+                            <span>Share knowledge freely</span>
+                        </div>
+                        <div className="feature-item">
+                            <svg className="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                <path d="M20 6L9 17l-5-5" />
+                            </svg>
+                            <span>Connect with peers</span>
+                        </div>
+                        <div className="feature-item">
+                            <svg className="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                <path d="M20 6L9 17l-5-5" />
+                            </svg>
+                            <span>Grow your career</span>
+                        </div>
+                    </div>
+
+                    <Link to="/create" className="cta-button btn-ripple">
+                        Start Writing →
+                    </Link>
+                </div>
             </section>
 
             <div className="search-container">
@@ -68,7 +95,12 @@ export default function Home() {
             </div>
 
             <section className="posts">
-                {filteredPosts.length === 0 ? (
+                {loading ? (
+                    <div className="loading">
+                        <div className="spinner"></div>
+                        <p>Loading posts...</p>
+                    </div>
+                ) : filteredPosts.length === 0 ? (
                     <p className="no-posts">
                         {searchQuery ? `No posts found matching "${searchQuery}"` : 'No posts yet. Share your first insight!'}
                     </p>
@@ -78,7 +110,6 @@ export default function Home() {
                             <PostCard key={post.id} post={post} />
                         ))}
 
-                        {/* Pagination Controls - Only show if not searching and pagination data exists */}
                         {!searchQuery && pagination && pagination.totalPages > 1 && (
                             <div className="pagination-container">
                                 <button

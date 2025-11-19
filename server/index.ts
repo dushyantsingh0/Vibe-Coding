@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3001;
 
 // Configure CORS for Vercel deployment
 const corsOptions = {
-    origin: function (origin, callback) {
+    origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
         // Allow requests with no origin (like mobile apps, curl, postman)
         if (!origin) return callback(null, true);
 
@@ -206,7 +206,6 @@ app.put('/api/posts/:id', async (req, res) => {
                 title,
                 excerpt,
                 content,
-                updatedAt: new Date(),
             })
             .where(eq(posts.id, postId))
             .returning();
