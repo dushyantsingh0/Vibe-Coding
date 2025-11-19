@@ -57,44 +57,79 @@
 
 .share-preview-container {
     flex: 1;
-    overflow-y: auto;
+    overflow: hidden;
+    /* Prevent scrollbars */
     padding: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
     background: #111;
+    position: relative;
 }
 
 /* 
-   We scale the card down to fit in the modal visually, 
-   but the actual capture happens at full resolution 
+   Robust scaling for the preview.
+   The card is 1200x630.
+   We use a container with fixed aspect ratio and scale the content to fit.
 */
 .creative-card-scale-wrapper {
+    width: 1200px;
+    height: 630px;
     transform-origin: center center;
-    /* Responsive scaling handled via media queries or JS if needed, 
-       but for now we just let it fit or scroll if too big, 
-       or use zoom/transform to fit. 
-       Let's try a simple max-width approach on the wrapper.
-    */
-    max-width: 100%;
-    overflow: hidden;
-    border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    /* Default scale for desktop */
+    transform: scale(0.6);
+    /* Compensate for the space taken by the unscaled element if needed, 
+       but since we are in a flex container with overflow hidden, 
+       we can just let it center. 
+       However, flexbox centers the *unscaled* size. 
+       So we need to trick it or use a wrapper.
+    */
+    /* Actually, let's use a fixed size wrapper that matches the scaled size */
 }
 
-/* Scale down for preview on smaller screens */
+/* 
+   Better approach: 
+   We can't easily change the wrapper size in CSS based on scale.
+   So we'll use absolute positioning within a responsive container.
+*/
+.share-preview-container {
+    /* Force a reasonable height for the preview area */
+    min-height: 400px;
+}
+
+.creative-card-scale-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.6);
+}
+
 @media (max-width: 1300px) {
     .creative-card-scale-wrapper {
-        transform: scale(0.6);
-        margin: -120px;
-        /* Compensate for scale space */
+        transform: translate(-50%, -50%) scale(0.5);
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .creative-card-scale-wrapper {
-        transform: scale(0.35);
-        margin: -200px;
+        transform: translate(-50%, -50%) scale(0.4);
+    }
+
+    .share-preview-container {
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 600px) {
+    .creative-card-scale-wrapper {
+        transform: translate(-50%, -50%) scale(0.28);
+    }
+
+    .share-preview-container {
+        min-height: 220px;
+        padding: 16px;
     }
 }
 

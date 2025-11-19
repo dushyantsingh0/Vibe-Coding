@@ -49,6 +49,65 @@
 
 .brand-icon {
     font-size: 24px;
+}
+
+.brand-name {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(to right, #fff, #ccc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card-date {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-title {
+    font-size: 56px;
+    line-height: 1.1;
+    font-weight: 800;
+    margin: 0 0 24px 0;
+    background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-excerpt {
+    font-size: 24px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-weight: 400;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 32px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 32px;
